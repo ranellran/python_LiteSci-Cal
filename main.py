@@ -2,6 +2,9 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from liteSci_CalLayout import SciCalcLayout #import the layout class
 
+
+
+
 if __name__ == "__main__":  
     app = QApplication(sys.argv)
     try:

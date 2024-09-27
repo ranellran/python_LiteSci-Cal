@@ -83,6 +83,9 @@ class SciCalcLayout(QWidget):
         row1Layout.setSpacing(0)
         row1.setLayout(row1Layout)
 
+        
+
+
 
         col1 = QLabel('''<div style="text-align: left;">
                             <span style="font-family: 'Copperplate Gothic Bold'; font-size: 25px; font-weight: bold; color: #fff;">LiteSci-Cal</span><br>
@@ -116,21 +119,28 @@ class SciCalcLayout(QWidget):
         # Row 2: Two rows with percentage-based height
         row2 = QWidget()
         row2Layout = QVBoxLayout()
-        row2Layout.setContentsMargins(0, int(20), 0, int(20))
+        row2Layout.setContentsMargins(0, 20, 0, 20)  # Setting margins directly without converting to int
         row2Layout.setSpacing(0)
-        row2.setStyleSheet("""border-radius: 15px; background-color: #DCEAF7;""")
+        row2.setStyleSheet("border-radius: 15px; background-color: #DCEAF7;")
         row2.setLayout(row2Layout)
 
         # Sub Row 1: Typing show text field
-        subRow1 = CustomLineEdit()  # Create a QLineEdit for user input
-        subRow1.setStyleSheet("""
+        self.input_field = CustomLineEdit()  # Create a QLineEdit for user input
+        self.input_field.setStyleSheet("""
             border-radius: 0px;
             font-size: 25px;
             font-weight: bold;  /* Make text bold */
             color: #000;        /* Black text color */
         """)
-        subRow1.setPlaceholderText("")  # Placeholder text
-        subRow1.setFixedHeight(50)  # Fixed height for the input field
+        self.input_field.setPlaceholderText("")  # Placeholder text
+        self.input_field.setFixedHeight(50)  # Fixed height for the input field
+
+        # Add QLineEdit to the layout
+        row2Layout.addWidget(self.input_field)
+        row2Layout.setStretch(0, 60)  # 60% of Row 2 height for Sub Row 1
+
+
+
 
         # Sub Row 2: Answer section
         subRow2 = QLabel("")  # Create a QLabel for displaying the answer
@@ -142,16 +152,11 @@ class SciCalcLayout(QWidget):
         """)
         subRow2.setFixedHeight(50)  # Fixed height for the answer display
 
+        # Add answer display to the layout
+        row2Layout.addWidget(subRow2)
+        row2Layout.setStretch(1, 40)  # 40% of Row 2 height for Sub Row 2
 
-
-
-        # Add widgets to the layout
-        row2Layout.addWidget(subRow1)
-        row2Layout.setStretch(0, 0)  # 60% of Row 2 height for Sub Row 1
-        #row2Layout.addWidget(cursor_label)  # Add cursor label
-        row2Layout.setStretch(1, 0)  # 40% of Row 2 height for Sub Row 2
-        row2Layout.addWidget(subRow2)  # Add answer display
-
+        # Add the row2 widget to the upper layout
         upperLayout.addWidget(row2)
         upperLayout.setStretch(1, 40)  # 40% of the upper section height for Row 2
 
@@ -163,9 +168,7 @@ class SciCalcLayout(QWidget):
 
 
 
-
-
-# Row 3: Grid layout (6 columns, 3 rows) with merged cells
+        # Row 3: Grid layout (6 columns, 3 rows) with merged cells
         row3 = QWidget()
         gridLayout = QGridLayout()
         row3.setLayout(gridLayout)
@@ -198,8 +201,7 @@ class SciCalcLayout(QWidget):
         gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 1, 1)  
         gridLayout.addItem(QSpacerItem(50, 30, QSizePolicy.Expanding, QSizePolicy.Minimum), 1, 3) 
         gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 1, 4)  
-        gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 1)
-        gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 1)  
+        gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 0)
         gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 1)
         gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 3)  
         gridLayout.addItem(QSpacerItem(30, 20, QSizePolicy.Expanding, QSizePolicy.Minimum), 2, 4)
@@ -252,9 +254,6 @@ class SciCalcLayout(QWidget):
         self.down_button = QPushButton('↓')
         set_button_attributes(self.down_button)
 
-        # Create an instance of CustomLineEdit
-        self.input_field = CustomLineEdit(self)
-        self.layout.addWidget(self.input_field)
 
 
         # Connect buttons to their respective functions
@@ -269,6 +268,8 @@ class SciCalcLayout(QWidget):
 
     def move_cursor_down(self):
         print("Moving cursor down")  # Placeholder action
+
+
 
     def move_cursor_left(self):
         cursor_pos = self.input_field.cursorPosition()
@@ -287,3 +288,12 @@ class SciCalcLayout(QWidget):
             print(f"Cursor moved right to position: {self.input_field.cursorPosition()}")
         else:
             print("Cursor already at the end")
+
+
+    def move_cursor_left(self):
+            self.input_field.move_cursor_left()  # Move the cursor left
+            self.input_field.setFocus()  # Set focus back to input field
+
+    def move_cursor_right(self):
+            self.input_field.move_cursor_right()  # Move the cursor right
+            self.input_field.setFocus()  # Set focus back to input field

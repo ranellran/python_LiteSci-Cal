@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtCore import Qt
 
 class CustomLineEdit(QLineEdit):
     def __init__(self, parent=None):
@@ -14,8 +15,10 @@ class CustomLineEdit(QLineEdit):
         if cursor_pos < len(self.text()):
             self.setCursorPosition(cursor_pos + 1)
 
-    def move_cursor_up(self):
-        print("Moving cursor up")  # Implement logic as needed
-
-    def move_cursor_down(self):
-        print("Moving cursor down")  # Implement logic as needed
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Left:
+            self.move_cursor_left()
+        elif event.key() == Qt.Key_Right:
+            self.move_cursor_right()
+        else:
+            super().keyPressEvent(event)
